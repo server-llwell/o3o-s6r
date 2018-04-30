@@ -2,14 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>O2O_Server</RootNamespace>
+    <AssemblyName>O2O_Server</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
+    <Folder Include="Buss\" />
+    <Folder Include="Dao\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <PackageReference Include="Senparc.Weixin.WxOpen" Version="1.9.1" />
   </ItemGroup>
 
   <ItemGroup>

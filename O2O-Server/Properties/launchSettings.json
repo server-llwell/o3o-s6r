@@ -19,11 +19,11 @@
     "O2O_Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "WxOpen",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:50673/"
+      "applicationUrl": "http://localhost:5000/"
     }
   }
 }
