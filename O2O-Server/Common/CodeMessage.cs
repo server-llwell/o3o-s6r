@@ -13,6 +13,8 @@ namespace O2O_Server.Common
         OK = 0,
         PostNull = -1,
 
+        PaymentError = 3000,
+
         NotFound = 404,
         InnerError = 500,
 

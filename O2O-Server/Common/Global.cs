@@ -36,5 +36,43 @@ namespace O2O_Server.Common
                 return appSecret;
             }
         }
+
+
+        /// <summary>
+        /// 微信支付MchId
+        /// </summary>
+        public static string MCHID
+        {
+            get
+            {
+                var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+                return mchId;
+            }
+        }
+
+
+        /// <summary>
+        /// 微信支付Key
+        /// </summary>
+        public static string PaymentKey
+        {
+            get
+            {
+                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+                return paymentKey;
+            }
+        }
+
+        /// <summary>
+        /// 微信支付回调地址
+        /// </summary>
+        public static string CallBackUrl
+        {
+            get
+            {
+                var callBackUrl = "http://wxapp.llwell.net/api/O2O/PaymentCallBack";
+                return callBackUrl;
+            }
+        }
     }
 }

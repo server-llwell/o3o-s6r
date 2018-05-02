@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using O2O_Server.Buss;
 using O2O_Server.Common;
+using Senparc.Weixin;
+using Senparc.Weixin.Exceptions;
+using Senparc.Weixin.MP.TenPayLibV3;
 
 namespace O2O_Server.Controllers
 {
@@ -76,5 +82,32 @@ namespace O2O_Server.Controllers
                                                 paymentApi.method,
                                                 paymentApi.param));
         }
+
+        /// <summary>
+        /// 支付操作类API回调地址
+        /// </summary>
+        /// <param name="paymentApi"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public XmlResult PaymentCallBack()
+        {
+            ResponseHandler resHandler = new ResponseHandler(HttpContext);
+
+            PaymentCallBackBuss paymentCallBackBuss = new PaymentCallBackBuss();
+            string result = paymentCallBackBuss.GetPaymentResult(resHandler);
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.LoadXml(result);
+            return this.Xml(xdoc);
+
+        }
+    }
+    public static class ControllerExtension
+    {
+        public static XmlResult Xml(this O2OController request, object obj) { return Xml(obj, null, null, XmlRequestBehavior.DenyGet); }
+        public static XmlResult Xml(this O2OController request, object obj, XmlRequestBehavior behavior) { return Xml(obj, null, null, behavior); }
+        public static XmlResult Xml(this O2OController request, object obj, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, null, contentEncoding, behavior); }
+        public static XmlResult Xml(this O2OController request, object obj, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, contentType, contentEncoding, behavior); }
+
+        internal static XmlResult Xml(object data, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior) { return new XmlResult() { ContentEncoding = contentEncoding, ContentType = contentType, Data = data, XmlRequestBehavior = behavior }; }
     }
 }
