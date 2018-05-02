@@ -46,10 +46,7 @@ namespace O2O_Server.Buss
                     return_code = "FAIL";
                     return_msg = "签名失败";
                 }
-                return string.Format(@"<xml>
-<return_code><![CDATA[{0}]]></return_code>
-<return_msg><![CDATA[{1}]]></return_msg>
-</xml>", return_code, return_msg);
+                return string.Format(@"<xml><return_code><![CDATA[{0}]]></return_code><return_msg><![CDATA[{1}]]></return_msg></xml>", return_code, return_msg);
 
             }
             catch

@@ -95,19 +95,9 @@ namespace O2O_Server.Controllers
 
             PaymentCallBackBuss paymentCallBackBuss = new PaymentCallBackBuss();
             string result = paymentCallBackBuss.GetPaymentResult(resHandler);
-            XmlDocument xdoc = new XmlDocument();
-            xdoc.LoadXml(result);
-            return this.Xml(xdoc);
+            return this.Xml(result);
 
         }
     }
-    public static class ControllerExtension
-    {
-        public static XmlResult Xml(this O2OController request, object obj) { return Xml(obj, null, null, XmlRequestBehavior.DenyGet); }
-        public static XmlResult Xml(this O2OController request, object obj, XmlRequestBehavior behavior) { return Xml(obj, null, null, behavior); }
-        public static XmlResult Xml(this O2OController request, object obj, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, null, contentEncoding, behavior); }
-        public static XmlResult Xml(this O2OController request, object obj, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, contentType, contentEncoding, behavior); }
-
-        internal static XmlResult Xml(object data, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior) { return new XmlResult() { ContentEncoding = contentEncoding, ContentType = contentType, Data = data, XmlRequestBehavior = behavior }; }
-    }
+    
 }
