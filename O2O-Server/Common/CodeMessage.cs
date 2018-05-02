@@ -23,5 +23,7 @@ namespace O2O_Server.Common
         InvalidToken = 4000,
         InvalidMethod = 4001,
         InvalidParam = 4002,
+
+        GoodsNotFound=6001,
     }
 }
