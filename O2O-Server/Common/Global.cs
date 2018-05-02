@@ -20,7 +20,8 @@ namespace O2O_Server.Common
         {
             get
             {
-                var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.User);
+                //var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.User);
+                var appId = System.Environment.GetEnvironmentVariable("WxAppId");
                 return appId;
             }
         }
