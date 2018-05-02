@@ -32,7 +32,8 @@ namespace O2O_Server.Common
         {
             get
             {
-                var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.User);
+                //var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.User);
+                var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret");
                 return appSecret;
             }
         }
@@ -45,7 +46,8 @@ namespace O2O_Server.Common
         {
             get
             {
-                var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+                //var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+                var mchId = System.Environment.GetEnvironmentVariable("WxMchId");
                 return mchId;
             }
         }
@@ -58,7 +60,8 @@ namespace O2O_Server.Common
         {
             get
             {
-                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+                //var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey");
                 return paymentKey;
             }
         }
@@ -70,7 +73,7 @@ namespace O2O_Server.Common
         {
             get
             {
-                var callBackUrl = "http://wxapp.llwell.net/api/O2O/PaymentCallBack";
+                var callBackUrl = "https://wxapp.llwell.net/api/O2O/PaymentCallBack";
                 return callBackUrl;
             }
         }
