@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace O2O_Server.Controllers
@@ -76,7 +77,7 @@ namespace O2O_Server.Controllers
             response.ContentType = !string.IsNullOrEmpty(this.ContentType) ? this.ContentType : "application/xml";
             if (this.ContentEncoding != null)
             {
-                //response.Body = this.ContentEncoding;
+                //response.ContentEncoding = this.ContentEncoding;
             }
             if (Data != null)
             {
@@ -94,6 +95,20 @@ namespace O2O_Server.Controllers
         }
     }
 
-    
+    public static class ControllerExtension
+    {
+        public static XmlResult Xml(this Controller request, object obj) { return Xml(obj, null, null, XmlRequestBehavior.DenyGet); }
+        public static XmlResult Xml(this Controller request, object obj, XmlRequestBehavior behavior) { return Xml(obj, null, null, behavior); }
+        public static XmlResult Xml(this Controller request, object obj, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, null, contentEncoding, behavior); }
+        public static XmlResult Xml(this Controller request, object obj, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior) { return Xml(obj, contentType, contentEncoding, behavior); }
+
+        internal static XmlResult Xml(object data, string contentType, Encoding contentEncoding, XmlRequestBehavior behavior)
+        {
+            XmlDocument xdoc = new XmlDocument();
+            xdoc.LoadXml(data.ToString());
+            data = xdoc;
+            return new XmlResult() { ContentEncoding = contentEncoding, ContentType = contentType, Data = data, XmlRequestBehavior = behavior };
+        }
+    }
 
 }
