@@ -33,7 +33,7 @@ namespace O2O_Server.Buss
             {
                 Goods goods = new Goods();
                 goods.id = dt.Rows[0]["id"].ToString();
-                goods.slt = dt.Rows[0]["slt"].ToString();
+                goods.slt = dt.Rows[0]["thumb"].ToString().Split(',');
                 goods.goodsname = dt.Rows[0]["goodsname"].ToString();
                 goods.price = dt.Rows[0]["price"].ToString();
                 goods.stock = dt.Rows[0]["stock"].ToString();
@@ -53,7 +53,7 @@ namespace O2O_Server.Buss
     public class Goods
     {
         public string id;
-        public string slt;
+        public string[] slt;
         public string goodsname;
         public string price;
         public string stock;

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using O2O_Server.Common;
+using O2O_Server.Dao;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.TenPayLibV3;
 using Senparc.Weixin.WxOpen.Containers;
@@ -41,8 +42,12 @@ namespace O2O_Server.Buss
             {
                 SessionBag sessionBag =SessionContainer.GetSession(paymentParam.token);
                 var openId = sessionBag.OpenId;
-                var billId = this.createBill(paymentParam);
+                var billId = this.createBill(openId,paymentParam);
                 var totalPrice = this.getBillPrice(paymentParam);
+                if (totalPrice==0)
+                {
+                    throw new ApiException(CodeMessage.PaymentTotalPriceZero, "PaymentTotalPriceZero");
+                }
                 var timeStamp = TenPayV3Util.GetTimestamp();
                 var nonceStr = TenPayV3Util.GetNoncestr();
                 var product = paymentParam.product;
@@ -80,42 +85,49 @@ namespace O2O_Server.Buss
             }
         }
 
-        private string createBill(PaymentParam paymentParam)
+        private string createBill(string openId,PaymentParam paymentParam)
         {
+            PaymentDao pDao = new PaymentDao();
+
             string pre = DateTime.Now.ToString("yyyyMMddHHmm");
             string billId = pre + "XC" + TenPayV3Util.BuildRandomStr(4);
-
-            //数据库实际保存订单信息
-
-            return billId;
+            if (pDao.saveOrder(openId,billId, paymentParam))
+            {
+                return billId;
+            }
+            else
+            {
+                throw new ApiException(CodeMessage.InitOrderError, "InitOrderError");
+            }
         }
 
         private int getBillPrice(PaymentParam paymentParam)
         {
             int totalPrice = 1;
-
-            #if !DEBUG
+        #if !DEBUG
             //实际计算具体价格
+            PaymentDao pDao = new PaymentDao();
+            totalPrice = pDao.getOrderTotalPrice(paymentParam);
 
-
-            #endif
+        #endif
             return totalPrice;
         }
+       
     }
 
     public class PaymentParam
     {
-        public string token;
-        public string goodsId;
-        public string inputAddress;
-        public string inputIdCard;
-        public string inputName;
-        public string inputNum;
-        public string inputPerson;
-        public string inputPhone;
-        public string radio;
-        public string shop;
-        public string product;
+        public string token; //
+        public string goodsId;//商品id
+        public string inputAddress;//地址
+        public string inputIdCard;//身份证
+        public string inputName;//姓名对应身份证
+        public string inputNum;//数量
+        public string inputPerson;//姓名
+        public string inputPhone;//电话
+        public string radio;//1是取货2是邮寄
+        public string shop;//店铺id
+        public string product;//商品名称
     }
 
     public class PaymentResults

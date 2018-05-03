@@ -13,17 +13,21 @@ namespace O2O_Server.Common
         OK = 0,
         PostNull = -1,
 
-        PaymentError = 3000,
 
         NotFound = 404,
         InnerError = 500,
 
         SenparcCode = 1000,
 
+        PaymentError = 3000,
+        PaymentTotalPriceZero=3001,
+
         InvalidToken = 4000,
         InvalidMethod = 4001,
         InvalidParam = 4002,
 
         GoodsNotFound=6001,
+
+        InitOrderError=7000,
     }
 }

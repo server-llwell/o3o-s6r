@@ -1,6 +1,7 @@
 ﻿using O2O_Server.Buss;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace O2O_Server.Common
 {
     public class Global
     {
+        public static DataTable provincesDT;
+        public static DataTable cityDT;
+        public static DataTable areasDT;
+
         /// <summary>
         /// 基础业务处理类对象
         /// </summary>
@@ -99,5 +104,7 @@ namespace O2O_Server.Common
                 return callBackUrl;
             }
         }
+
+    
     }
 }

@@ -18,7 +18,7 @@ namespace O2O_Server.Dao
         }
         public DataTable getGoods(string barcode)
         {
-            string sql = "select id,slt,goodsname,price,stock from t_goods_list where barcode = '" + barcode+"'";
+            string sql = "select id,thumb,goodsname,price,stock from t_goods_list where barcode = '" + barcode+"'";
             return DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
         }
     }
