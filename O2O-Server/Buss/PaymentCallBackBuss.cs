@@ -1,4 +1,5 @@
 ﻿using O2O_Server.Common;
+using O2O_Server.Dao;
 using Senparc.Weixin.MP.TenPayLibV3;
 using System;
 using System.Collections.Generic;
@@ -51,7 +52,22 @@ namespace O2O_Server.Buss
                     // out_trade_no:商城实际订单号
                     // openId:用户信息
                     // total_fee:实际支付价格
-
+                    PaymentDao pDao = new PaymentDao();
+                    if (pDao.checkOrderTotalPrice(out_trade_no,Convert.ToDouble(total_fee) ))
+                    {
+                        if (pDao.updateOrderForPay(out_trade_no,transaction_id))
+                        {
+                            pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-成功");
+                        }
+                        else
+                        {
+                            pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-修改订单状态失败");
+                        }
+                    }
+                    else
+                    {
+                        pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-支付金额与订单总金额不符");
+                    }
                 }
                 else
                 {

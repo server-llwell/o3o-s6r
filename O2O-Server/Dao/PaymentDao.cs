@@ -23,6 +23,13 @@ namespace O2O_Server.Dao
             string sql = "select id,thumb,goodsname,price,stock from t_goods_list where barcode = '" + barcode+"'";
             return DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
         }
+        /// <summary>
+        /// 保存订单
+        /// </summary>
+        /// <param name="openId"></param>
+        /// <param name="billid"></param>
+        /// <param name="paymentParam"></param>
+        /// <returns></returns>
         public bool saveOrder(string openId, string billid, PaymentParam paymentParam)
         {
             try
@@ -61,6 +68,13 @@ namespace O2O_Server.Dao
                 return false;
             }
         }
+        /// <summary>
+        /// 保存订单商品
+        /// </summary>
+        /// <param name="billid"></param>
+        /// <param name="goodsDT"></param>
+        /// <param name="paymentParam"></param>
+        /// <returns></returns>
         private bool saveOrderGoods(string billid, DataTable goodsDT, PaymentParam paymentParam)
         {
             string insql = "insert into t_order_goods(merchantOrderId,barCode,skuUnitPrice,quantity," +
@@ -93,6 +107,11 @@ namespace O2O_Server.Dao
         //    DatabaseOperation.ExecuteDML(sql);
         //}
 
+        /// <summary>
+        /// 获取订单总金额
+        /// </summary>
+        /// <param name="paymentParam"></param>
+        /// <returns></returns>
         public int getOrderTotalPrice(PaymentParam paymentParam)
         {
             try
@@ -111,5 +130,53 @@ namespace O2O_Server.Dao
                 return 0;
             }
         }
+
+        /// <summary>
+        /// 核对订单总金额和支付金额
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="totalPrice"></param>
+        /// <returns></returns>
+        public bool checkOrderTotalPrice(string orderId,double totalPrice)
+        {
+            string sql = "select * from t_order_list where parentOrderId = '"+orderId+"'";
+            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                double total = Convert.ToDouble(dt.Rows[0]["tradeAmount"]);
+                if (total*100 == totalPrice)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 修改支付状态
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="payNo"></param>
+        public bool updateOrderForPay(string orderId,string payNo)
+        {
+            string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',status ='新订单' where parentOrderId = '" + orderId + "' ";
+            return DatabaseOperation.ExecuteDML(upsql);
+        }
+
+        /// <summary>
+        /// 保存支付日志
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="payNo"></param>
+        /// <param name="totalPrice"></param>
+        /// <param name="openid"></param>
+        /// <param name="status"></param>
+        public void insertPayLog(string orderId, string payNo, string totalPrice,string openid,string status)
+        {
+            string insql = "insert into t_log_pay(orderId,payType,payNo,totalPrice,openid,createtime,status) " +
+                "values('"+orderId+ "','微信支付','" + payNo + "'," + totalPrice + ",'" + openid + "',now(),'" + status + "')";
+            DatabaseOperation.ExecuteDML(insql);
+        }
+
     }
 }
