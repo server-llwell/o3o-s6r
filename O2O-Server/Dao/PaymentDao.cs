@@ -69,7 +69,7 @@ namespace O2O_Server.Dao
                         " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() + "',0,0)";
             if (DatabaseOperation.ExecuteDML(insql))
             {
-                setGoodsNum(billid, goodsDT.Rows[0]["barcode"].ToString(),Convert.ToInt32( paymentParam.inputNum));
+                //setGoodsNum(billid, goodsDT.Rows[0]["barcode"].ToString(),Convert.ToInt32( paymentParam.inputNum));
                 return true;
             }
             else
@@ -78,20 +78,20 @@ namespace O2O_Server.Dao
             }
 
         }
-        private void setGoodsNum(string orderid, string tm, int num)
-        {
-            string sql = "update t_ck_goods_warehouse set goodsnum=goodsnum-" + num + " where barcode = '" + tm;//+ "' and wcode= '" + wcode + "' ";
-            if (DatabaseOperation.ExecuteDML(sql))
-            {
-                setGoodsNumLog(orderid, tm, num, "扣除库存");
-            }
-        }
+        //private void setGoodsNum(string orderid, string tm, int num)
+        //{
+        //    string sql = "update t_ck_goods_warehouse set goodsnum=goodsnum-" + num + " where barcode = '" + tm;//+ "' and wcode= '" + wcode + "' ";
+        //    if (DatabaseOperation.ExecuteDML(sql))
+        //    {
+        //        setGoodsNumLog(orderid, tm, num, "扣除库存");
+        //    }
+        //}
 
-        private void setGoodsNumLog(string orderid, string tm, int num, string state)
-        {
-            string sql = "insert into t_log_goodsnum (createtime,wcode,orderid,tm,goodsnum,state) values(now(),'" + "" + "','" + orderid + "','" + tm + "'," + num + ",'" + state + "')";
-            DatabaseOperation.ExecuteDML(sql);
-        }
+        //private void setGoodsNumLog(string orderid, string tm, int num, string state)
+        //{
+        //    string sql = "insert into t_log_goodsnum (createtime,wcode,orderid,tm,goodsnum,state) values(now(),'" + "" + "','" + orderid + "','" + tm + "'," + num + ",'" + state + "')";
+        //    DatabaseOperation.ExecuteDML(sql);
+        //}
 
         public int getOrderTotalPrice(PaymentParam paymentParam)
         {
