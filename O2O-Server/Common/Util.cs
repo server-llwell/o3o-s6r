@@ -13,11 +13,11 @@ namespace O2O_Server.Common
         {
             if (Global.provincesDT==null)
             {
-                string psql = "select * from provinces";
+                string psql = "select * from t_base_provinces";
                 Global.provincesDT = DatabaseOperation.ExecuteSelectDS(psql, "provinces").Tables["provinces"];
-                string csql = "select * from cities";
+                string csql = "select * from t_base_cities";
                 Global.cityDT = DatabaseOperation.ExecuteSelectDS(csql, "cities").Tables["cities"];
-                string asql = "select * from areas";
+                string asql = "select * from t_base_areas";
                 Global.areasDT = DatabaseOperation.ExecuteSelectDS(asql, "areas").Tables["areas"];
             }
 

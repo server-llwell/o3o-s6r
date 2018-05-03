@@ -66,7 +66,7 @@ namespace O2O_Server.Buss
         /// <param name="buss">具体业务实现类</param>
         private void AddBuss(ApiType apiType, IBuss buss)
         {
-            if(bussList.ContainsKey(apiType))
+            if (bussList.ContainsKey(apiType))
             {
                 bussList[apiType] = buss;
             }
@@ -85,14 +85,16 @@ namespace O2O_Server.Buss
         private bool CheckToken(ApiType apiType, string token)
         {
             bool b = true;
-            if(apiType != ApiType.UserApi)
+#if !DEBUG
+            if (apiType != ApiType.UserApi)
             {
                 SessionBag sessionBag = SessionContainer.GetSession(token);
-                if(sessionBag == null)
+                if (sessionBag == null)
                 {
                     b = false;
                 }
             }
+#endif
             return b;
         }
 
@@ -112,7 +114,7 @@ namespace O2O_Server.Buss
             }
             var obj = bussList[apiType];
             MethodInfo methodInfo = obj.GetType().GetMethod("Do_" + method);
-            if(methodInfo == null)
+            if (methodInfo == null)
             {
                 return new ResultsJson(new Message(CodeMessage.InvalidMethod, "InvalidMethod"), null);
             }
@@ -124,9 +126,9 @@ namespace O2O_Server.Buss
                 {
                     data = methodInfo.Invoke(obj, new object[] { param });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(ex.InnerException.GetType() == typeof(ApiException))
+                    if (ex.InnerException.GetType() == typeof(ApiException))
                     {
                         ApiException apiException = (ApiException)ex.InnerException;
                         message = new Message(apiException.code, apiException.msg);

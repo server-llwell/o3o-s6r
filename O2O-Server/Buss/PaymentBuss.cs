@@ -104,12 +104,13 @@ namespace O2O_Server.Buss
         private int getBillPrice(PaymentParam paymentParam)
         {
             int totalPrice = 1;
-        #if !DEBUG
-            //实际计算具体价格
             PaymentDao pDao = new PaymentDao();
             totalPrice = pDao.getOrderTotalPrice(paymentParam);
+#if !DEBUG
+            //实际计算具体价格
+            totalPrice = 1;
 
-        #endif
+#endif
             return totalPrice;
         }
        
