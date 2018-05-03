@@ -41,20 +41,18 @@ namespace O2O_Server.Buss
             {
                 SessionBag sessionBag =SessionContainer.GetSession(paymentParam.token);
                 var openId = sessionBag.OpenId;
-
-                var billId = string.Format("{0}{1}{2}", tenPayV3Info.MchId/*10位*/, DateTime.Now.ToString("yyyyMMddHHmmss"),
-                            TenPayV3Util.BuildRandomStr(6));
-
+                var billId = this.createBill(paymentParam);
+                var totalPrice = this.getBillPrice(paymentParam);
                 var timeStamp = TenPayV3Util.GetTimestamp();
                 var nonceStr = TenPayV3Util.GetNoncestr();
-                var product = "流连优选-测试商品";
+                var product = paymentParam.product;
                 var xmlDataInfo = 
                     new TenPayV3UnifiedorderRequestData(
                         tenPayV3Info.AppId, 
                         tenPayV3Info.MchId,
                         product,
-                        billId, 
-                        1, 
+                        billId,
+                        totalPrice, 
                         "127.0.0.1", 
                         tenPayV3Info.TenPayV3Notify, 
                         TenPayV3Type.JSAPI, 
@@ -82,12 +80,42 @@ namespace O2O_Server.Buss
             }
         }
 
-        
+        private string createBill(PaymentParam paymentParam)
+        {
+            string pre = DateTime.Now.ToString("yyyyMMddHHmm");
+            string billId = pre + "XC" + TenPayV3Util.BuildRandomStr(4);
+
+            //数据库实际保存订单信息
+
+            return billId;
+        }
+
+        private int getBillPrice(PaymentParam paymentParam)
+        {
+            int totalPrice = 1;
+
+            #if !DEBUG
+            //实际计算具体价格
+
+
+            #endif
+            return totalPrice;
+        }
     }
 
     public class PaymentParam
     {
         public string token;
+        public string goodsId;
+        public string inputAddress;
+        public string inputIdCard;
+        public string inputName;
+        public string inputNum;
+        public string inputPerson;
+        public string inputPhone;
+        public string radio;
+        public string shop;
+        public string product;
     }
 
     public class PaymentResults
@@ -98,6 +126,5 @@ namespace O2O_Server.Buss
         public string nonceStr;
         public string package;
         public string paySign;
-
     }
 }

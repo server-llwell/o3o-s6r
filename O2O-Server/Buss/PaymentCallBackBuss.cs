@@ -30,27 +30,31 @@ namespace O2O_Server.Buss
                 string openid = resHandler.GetParameter("openid");
                 string total_fee = resHandler.GetParameter("total_fee");
                 string time_end = resHandler.GetParameter("time_end");
+                string out_trade_no = resHandler.GetParameter("out_trade_no");
+                string transaction_id = resHandler.GetParameter("transaction_id");
 
-                Console.WriteLine(return_code);
-                Console.WriteLine(openid);
-                Console.WriteLine(total_fee);
-                Console.WriteLine(time_end);
+                Console.WriteLine();
+                Console.WriteLine("return_code" + return_code);
+                Console.WriteLine("out_trade_no:" + out_trade_no);
+                Console.WriteLine("openId:" + openid);
+                Console.WriteLine("total_fee:" + total_fee);
+                Console.WriteLine("time_end:" + time_end);
+                Console.WriteLine("transaction_id:" + transaction_id);
                 Console.WriteLine("------------------------------------------");
-                string res = null;
 
                 resHandler.SetKey(tenPayV3Info.Key);
                 //验证请求是否从微信发过来（安全）
                 if (resHandler.IsTenpaySign() && return_code.ToUpper() == "SUCCESS")
                 {
-                    res = "success";//正确的订单处理
-                                    //直到这里，才能认为交易真正成功了，可以进行数据库操作，但是别忘了返回规定格式的消息！
-
                     /* 这里可以进行订单处理的逻辑 */
+                    // transaction_id:微信支付单号
+                    // out_trade_no:商城实际订单号
+                    // openId:用户信息
+                    // total_fee:实际支付价格
 
                 }
                 else
                 {
-                    res = "wrong";//错误的订单处理
                     return_code = "FAIL";
                     return_msg = "签名失败";
                 }
