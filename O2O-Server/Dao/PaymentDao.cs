@@ -80,7 +80,7 @@ namespace O2O_Server.Dao
         }
         private void setGoodsNum(string orderid, string tm, int num)
         {
-            string sql = "update t_ck_goods_warehouse set goodsnum=goodsnum-" + num + " where barcode = '" + tm + "' and wcode= '" + wcode + "' ";
+            string sql = "update t_ck_goods_warehouse set goodsnum=goodsnum-" + num + " where barcode = '" + tm;//+ "' and wcode= '" + wcode + "' ";
             if (DatabaseOperation.ExecuteDML(sql))
             {
                 setGoodsNumLog(orderid, tm, num, "扣除库存");
@@ -89,7 +89,7 @@ namespace O2O_Server.Dao
 
         private void setGoodsNumLog(string orderid, string tm, int num, string state)
         {
-            string sql = "insert into t_log_goodsnum (createtime,wcode,orderid,tm,goodsnum,state) values(now(),'" + wcode + "','" + orderid + "','" + tm + "'," + num + ",'" + state + "')";
+            string sql = "insert into t_log_goodsnum (createtime,wcode,orderid,tm,goodsnum,state) values(now(),'" + "" + "','" + orderid + "','" + tm + "'," + num + ",'" + state + "')";
             DatabaseOperation.ExecuteDML(sql);
         }
 
