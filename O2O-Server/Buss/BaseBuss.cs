@@ -1,4 +1,5 @@
 ﻿using O2O_Server.Common;
+using Senparc.Weixin.WxOpen.Containers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -86,7 +87,11 @@ namespace O2O_Server.Buss
             bool b = true;
             if(apiType != ApiType.UserApi)
             {
-                // check
+                SessionBag sessionBag = SessionContainer.GetSession(token);
+                if(sessionBag == null)
+                {
+                    b = false;
+                }
             }
             return b;
         }

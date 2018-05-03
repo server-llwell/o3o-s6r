@@ -34,7 +34,7 @@ namespace O2O_Server.Buss
                 string transaction_id = resHandler.GetParameter("transaction_id");
 
                 Console.WriteLine();
-                Console.WriteLine("return_code" + return_code);
+                Console.WriteLine("return_code:" + return_code);
                 Console.WriteLine("out_trade_no:" + out_trade_no);
                 Console.WriteLine("openId:" + openid);
                 Console.WriteLine("total_fee:" + total_fee);
