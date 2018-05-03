@@ -76,7 +76,7 @@ namespace O2O_Server.Buss
 
                 return paymentResults;
             }
-            catch
+            catch(Exception ex)
             {
                 throw new ApiException(CodeMessage.PaymentError, "PaymentError");
             }

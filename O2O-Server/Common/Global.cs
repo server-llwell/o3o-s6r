@@ -20,8 +20,12 @@ namespace O2O_Server.Common
         {
             get
             {
-                //var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.User);
+#if DEBUG
+                var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.User);
+#endif
+#if !DEBUG
                 var appId = System.Environment.GetEnvironmentVariable("WxAppId");
+#endif
                 return appId;
             }
         }
@@ -33,8 +37,12 @@ namespace O2O_Server.Common
         {
             get
             {
-                //var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.User);
+#if DEBUG
+                var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.User);
+#endif
+#if !DEBUG
                 var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret");
+#endif
                 return appSecret;
             }
         }
@@ -47,8 +55,12 @@ namespace O2O_Server.Common
         {
             get
             {
-                //var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+#if DEBUG
+                var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+#endif
+#if !DEBUG
                 var mchId = System.Environment.GetEnvironmentVariable("WxMchId");
+#endif
                 return mchId;
             }
         }
@@ -61,8 +73,12 @@ namespace O2O_Server.Common
         {
             get
             {
-                //var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+#if DEBUG
+                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+#endif
+#if !DEBUG
                 var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey");
+#endif
                 return paymentKey;
             }
         }
@@ -74,7 +90,12 @@ namespace O2O_Server.Common
         {
             get
             {
+#if DEBUG
+                var callBackUrl = "http://dlxm.f3322.net:10010/api/O2O/PaymentCallBack";
+#endif
+#if !DEBUG
                 var callBackUrl = "https://wxapp.llwell.net/api/O2O/PaymentCallBack";
+#endif
                 return callBackUrl;
             }
         }

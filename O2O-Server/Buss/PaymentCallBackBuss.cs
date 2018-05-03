@@ -27,7 +27,15 @@ namespace O2O_Server.Buss
             {
                 string return_code = resHandler.GetParameter("return_code");
                 string return_msg = resHandler.GetParameter("return_msg");
-                Console.WriteLine(return_msg);
+                string openid = resHandler.GetParameter("openid");
+                string total_fee = resHandler.GetParameter("total_fee");
+                string time_end = resHandler.GetParameter("time_end");
+
+                Console.WriteLine(return_code);
+                Console.WriteLine(openid);
+                Console.WriteLine(total_fee);
+                Console.WriteLine(time_end);
+                Console.WriteLine("------------------------------------------");
                 string res = null;
 
                 resHandler.SetKey(tenPayV3Info.Key);
