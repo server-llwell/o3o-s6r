@@ -31,7 +31,7 @@ namespace O2O_Server.Dao
                     string pro = "";
                     string sql1 = "select g.barCode,max(g.skuBillName) goodsname,max(l.slt) slt " +
                         "from t_order_goods g,t_goods_list l " +
-                        "where l.barcode = g.barCode and g.merchantOrderId = ''" + dt.Rows[i]["merchantOrderId"].ToString() + "'' " +
+                        "where l.barcode = g.barCode and g.merchantOrderId = '" + dt.Rows[i]["merchantOrderId"].ToString() + "' " +
                         "group by g.barCode";
                     DataTable dt1 = DatabaseOperation.ExecuteSelectDS(sql1, "t_goods_list").Tables[0];
                     if (dt1.Rows.Count > 0)
