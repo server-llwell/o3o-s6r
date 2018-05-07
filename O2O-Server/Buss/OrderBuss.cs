@@ -23,11 +23,10 @@ namespace O2O_Server.Buss
             {
                 throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
             }
-            var openId = "oXgq05Ai9ViQIBIqqjYSB_NjrGrE";
-#if !DEBUG
+
              SessionBag sessionBag = SessionContainer.GetSession(orderListParam.token);
             var openId = sessionBag.OpenId;
-#endif
+
             OrderDao orderDao = new OrderDao();
             OrderListResult orderListResult = orderDao.getOrderList(openId, orderListParam.shop);
             
