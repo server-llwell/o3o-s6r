@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using O2O_Server.Common;
+using O2O_Server.Dao;
+using Senparc.Weixin.WxOpen.Containers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,22 +23,11 @@ namespace O2O_Server.Buss
             {
                 throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
             }
-
-            OrderListItem orderListItem = new OrderListItem();
-            orderListItem.billId = "327710274213934286";
-            orderListItem.imgUrl = "http://ecc-product.oss-cn-beijing.aliyuncs.com/xcx/首页-扫码下单色块@3x.png";
-            orderListItem.createTime = "2018.4.23 23:05";
-            orderListItem.product = "资生堂男士滋润乳100ml 补水保湿";
-            OrderListResult orderListResult = new OrderListResult();
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
-            orderListResult.orderList.Add(orderListItem);
+            SessionBag sessionBag = SessionContainer.GetSession(orderListParam.token);
+            var openId = sessionBag.OpenId;
+            OrderDao orderDao = new OrderDao();
+            OrderListResult orderListResult = orderDao.getOrderList(openId, orderListParam.shop);
+            
             return orderListResult;
         }
     }
@@ -54,9 +45,9 @@ namespace O2O_Server.Buss
 
     public class OrderListItem
     {
-        public string billId;
-        public string imgUrl;
-        public string createTime;
-        public string product;
+        public string billId;//订单号
+        public string imgUrl;//订单商品图片
+        public string createTime;//订单创建时间
+        public string product;//主要商品名
     }
 }
