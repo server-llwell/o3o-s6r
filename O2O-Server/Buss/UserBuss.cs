@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using O2O_Server.Common;
+using O2O_Server.Dao;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin.WxOpen.Containers;
 using Senparc.Weixin.WxOpen.Entities;
@@ -92,6 +93,16 @@ namespace O2O_Server.Buss
                 throw new ApiException(CodeMessage.SenparcCode, "校验失败");
             }
         }
+        public object Do_GetShopName(object param)
+        {
+            ShopParam shopParam = JsonConvert.DeserializeObject<ShopParam>(param.ToString());
+            if (shopParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+            UserDao userDao = new UserDao();
+            return userDao.getShopName(shopParam.shop);
+        }
     }
 
     public class LoginParam
@@ -112,5 +123,10 @@ namespace O2O_Server.Buss
         public string type;
         public string encryptedData;
         public string iv;
+    }
+
+    public class ShopParam
+    {
+        public string shop;
     }
 }
