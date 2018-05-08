@@ -178,5 +178,33 @@ namespace O2O_Server.Dao
             DatabaseOperation.ExecuteDML(insql);
         }
 
+        /// <summary>
+        /// 写入prepayid
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="prePayId"></param>
+        /// <returns></returns>
+        public bool writePrePayId(string orderId,string prePayId)
+        {
+            string upsql = "update t_order_list set prePayId= '"+prePayId+ "' where parentOrderId = '" + orderId + "' ";
+            return DatabaseOperation.ExecuteDML(upsql);
+        }
+
+        /// <summary>
+        /// 获取prepayid
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="prePayId"></param>
+        /// <returns></returns>
+        public string getPrePayId(string orderId)
+        {
+            string sql = "select prePayId from t_order_list where parentOrderId = '" + orderId + "' ";
+            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_order_list").Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0]["prePayId"].ToString();
+            }
+            return "";
+        }
     }
 }
