@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using O2O_Server.Common;
 using O2O_Server.Dao;
+using Senparc.Weixin.MP.Containers;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Sns;
 using Senparc.Weixin.WxOpen.Containers;
 using Senparc.Weixin.WxOpen.Entities;
@@ -30,6 +31,7 @@ namespace O2O_Server.Buss
             var jsonResult = SnsApi.JsCode2Json(Global.APPID, Global.APPSECRET, loginParam.code);
             if (jsonResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
             {
+                AccessTokenContainer.Register(Global.APPID, Global.APPSECRET);
                 var sessionBag = SessionContainer.UpdateSession(null, jsonResult.openid, jsonResult.session_key);
                 return new { sessionId = sessionBag.Key };
             }

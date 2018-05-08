@@ -21,6 +21,7 @@ namespace O2O_Server.Common
 
         PaymentError = 3000,
         PaymentTotalPriceZero=3001,
+        PaymentMsgError = 3002,
 
         InvalidToken = 4000,
         InvalidMethod = 4001,

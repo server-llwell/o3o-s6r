@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using O2O_Server.Common;
 using O2O_Server.Dao;
+using Senparc.Weixin.Entities;
 using Senparc.Weixin.MP;
 using Senparc.Weixin.MP.TenPayLibV3;
+using Senparc.Weixin.WxOpen.AdvancedAPIs.Template;
 using Senparc.Weixin.WxOpen.Containers;
 using System;
 using System.Collections.Generic;
@@ -78,6 +80,7 @@ namespace O2O_Server.Buss
                 paymentResults.paySign = paySign;
                 paymentResults.timeStamp = timeStamp;
                 paymentResults.product = product;
+                paymentResults.billId = billId;
 
                 return paymentResults;
             }
@@ -87,14 +90,30 @@ namespace O2O_Server.Buss
             }
         }
 
-        public object Do_GetPayment(object param)
+        public object Do_SendPaymentMsg(object param)
         {
-            GetPaymentParam getPaymentParam = JsonConvert.DeserializeObject<GetPaymentParam>(param.ToString());
-            if (getPaymentParam == null)
+            try
             {
-                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+                SendPaymentMsg sendPaymentMsg = JsonConvert.DeserializeObject<SendPaymentMsg>(param.ToString());
+                if (sendPaymentMsg == null)
+                {
+                    throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+                }
+                if(this.sendTemplateMessage(sendPaymentMsg.orderId))
+                {
+                    return new { };
+                }
+                else
+                {
+                    throw new ApiException(CodeMessage.PaymentMsgError, "PaymentMsgError");
+                }
             }
-            return pDao.getPayData(getPaymentParam.orderId);
+            catch(Exception ex)
+            {
+                throw new ApiException(CodeMessage.PaymentMsgError, "PaymentMsgError");
+            }
+
+            
         }
 
 
@@ -116,13 +135,39 @@ namespace O2O_Server.Buss
 
         private int getBillPrice(PaymentParam paymentParam)
         {
-            
             int totalPrice = pDao.getOrderTotalPrice(paymentParam);
+#if DEBUG
+            //实际计算具体价格
+            totalPrice = 1;
 
+#endif
             return totalPrice;
         }
-       
 
+        private bool sendTemplateMessage(string out_trade_no)
+        {
+            try
+            {
+                PaymentDataResults paymentDataResults = pDao.getPayData(out_trade_no);
+                WxJsonResult wxJsonResult = TemplateApi.SendTemplateMessage(Global.APPID,
+                    paymentDataResults.customerCode,
+                    Global.PaySuccessTemplate,
+                    new
+                    {
+                        keyword1 = new { value = paymentDataResults.shopName },
+                        keyword2 = new { value = paymentDataResults.goodsName },
+                        keyword3 = new { value = paymentDataResults.tradeTime },
+                        keyword4 = new { value = paymentDataResults.tradeAmount },
+                        keyword5 = new { value = paymentDataResults.payNo }
+                    },
+                    paymentDataResults.prePayId, null, "keyword4.DATA");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 
     public class PaymentParam
@@ -148,10 +193,11 @@ namespace O2O_Server.Buss
         public string nonceStr;
         public string package;
         public string paySign;
+        public string billId;
     }
-    public class GetPaymentParam
+
+    public class SendPaymentMsg
     {
-        public string token;
         public string orderId;
     }
 
@@ -163,5 +209,7 @@ namespace O2O_Server.Buss
         public string tradeTime;
         public string tradeAmount;
         public string prePayId;
+        public string payNo;
+        public string customerCode;
     }
 }

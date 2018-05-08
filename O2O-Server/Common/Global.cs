@@ -105,6 +105,17 @@ namespace O2O_Server.Common
             }
         }
 
-    
+        /// <summary>
+        /// 支付成功消息模板
+        /// </summary>
+        public static string PaySuccessTemplate
+        {
+            get
+            {
+                return "bjTZpPW5j7qG2zhzr_y1NYs_P3ZKZNdvGZgI8gbvT68";
+            }
+        }
+
+
     }
 }

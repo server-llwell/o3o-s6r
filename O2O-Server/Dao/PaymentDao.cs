@@ -139,6 +139,9 @@ namespace O2O_Server.Dao
         /// <returns></returns>
         public bool checkOrderTotalPrice(string orderId,double totalPrice)
         {
+#if DEBUG
+            return true;
+#endif
             string sql = "select * from t_order_list where parentOrderId = '"+orderId+"'";
             DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
@@ -198,7 +201,7 @@ namespace O2O_Server.Dao
         /// <returns></returns>
         public PaymentDataResults getPayData(string orderId)
         {
-            string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserId = s.shopCode and  parentOrderId = '" + orderId + "' ";
+            string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId, o.payNo,o.customerCode from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserId = s.shopCode and  parentOrderId = '" + orderId + "' ";
             DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_order_list").Tables[0];
             PaymentDataResults p = new PaymentDataResults();
             p.shopName = dt.Rows[0]["shopName"].ToString();
@@ -206,6 +209,9 @@ namespace O2O_Server.Dao
             p.tradeTime = dt.Rows[0]["tradeTime"].ToString();
             p.tradeAmount = dt.Rows[0]["tradeAmount"].ToString();
             p.prePayId = dt.Rows[0]["prePayId"].ToString();
+            p.payNo = dt.Rows[0]["payNo"].ToString();
+            p.customerCode = dt.Rows[0]["customerCode"].ToString();
+            
             return p;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using O2O_Server.Common;
 using O2O_Server.Dao;
+using Senparc.Weixin.Entities;
 using Senparc.Weixin.MP.TenPayLibV3;
 using Senparc.Weixin.WxOpen.AdvancedAPIs.Template;
 using System;
@@ -26,10 +27,12 @@ namespace O2O_Server.Buss
 
         public string GetPaymentResult(ResponseHandler resHandler)
         {
+            string return_code = "";
+            string return_msg = "";
             try
             {
-                string return_code = resHandler.GetParameter("return_code");
-                string return_msg = resHandler.GetParameter("return_msg");
+                return_code = resHandler.GetParameter("return_code");
+                return_msg = resHandler.GetParameter("return_msg");
                 string openid = resHandler.GetParameter("openid");
                 string total_fee = resHandler.GetParameter("total_fee");
                 string time_end = resHandler.GetParameter("time_end");
@@ -70,8 +73,6 @@ namespace O2O_Server.Buss
                     {
                         pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-支付金额与订单总金额不符");
                     }
-
-                    TemplateApi.SendTemplateMessage(Global.APPID, openid, "bjTZpPW5j7qG2zhzr_y1NYs_P3ZKZNdvGZgI8gbvT68", null, pDao.getPayData(out_trade_no).prePayId);
                 }
                 else
                 {
@@ -81,12 +82,12 @@ namespace O2O_Server.Buss
                 return string.Format(@"<xml><return_code><![CDATA[{0}]]></return_code><return_msg><![CDATA[{1}]]></return_msg></xml>", return_code, return_msg);
 
             }
-            catch
+            catch(Exception ex)
             {
-                return "";
+                return_code = "FAIL";
+                return_msg = "签名失败";
+                return string.Format(@"<xml><return_code><![CDATA[{0}]]></return_code><return_msg><![CDATA[{1}]]></return_msg></xml>", return_code, return_msg);
             }
         }
     }
-
-    
 }
