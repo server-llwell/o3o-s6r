@@ -1,6 +1,7 @@
 ﻿using O2O_Server.Common;
 using O2O_Server.Dao;
 using Senparc.Weixin.MP.TenPayLibV3;
+using Senparc.Weixin.WxOpen.AdvancedAPIs.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace O2O_Server.Buss
     public class PaymentCallBackBuss
     {
         private TenPayV3Info tenPayV3Info;
+        private PaymentDao pDao = new PaymentDao();
 
         public PaymentCallBackBuss()
         {
@@ -52,7 +54,7 @@ namespace O2O_Server.Buss
                     // out_trade_no:商城实际订单号
                     // openId:用户信息
                     // total_fee:实际支付价格
-                    PaymentDao pDao = new PaymentDao();
+                    
                     if (pDao.checkOrderTotalPrice(out_trade_no,Convert.ToDouble(total_fee) ))
                     {
                         if (pDao.updateOrderForPay(out_trade_no,transaction_id))
@@ -68,6 +70,8 @@ namespace O2O_Server.Buss
                     {
                         pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-支付金额与订单总金额不符");
                     }
+
+                    TemplateApi.SendTemplateMessage(Global.APPID, openid, "bjTZpPW5j7qG2zhzr_y1NYs_P3ZKZNdvGZgI8gbvT68", null, pDao.getPrePayId(out_trade_no));
                 }
                 else
                 {

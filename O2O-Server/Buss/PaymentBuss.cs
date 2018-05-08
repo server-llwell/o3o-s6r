@@ -14,6 +14,7 @@ namespace O2O_Server.Buss
     public class PaymentBuss : IBuss
     {
         private TenPayV3Info tenPayV3Info;
+        private PaymentDao pDao = new PaymentDao();
 
         public PaymentBuss()
         {
@@ -66,6 +67,7 @@ namespace O2O_Server.Buss
                         nonceStr);
 
                 var result = TenPayV3.Html5Order(xmlDataInfo);
+                pDao.writePrePayId(billId, result.prepay_id);
                 var package = string.Format("prepay_id={0}", result.prepay_id);
                 var paySign = TenPayV3.GetJsPaySign(tenPayV3Info.AppId, timeStamp, nonceStr, package, tenPayV3Info.Key);
                 
@@ -103,7 +105,7 @@ namespace O2O_Server.Buss
 
         private int getBillPrice(PaymentParam paymentParam)
         {
-            PaymentDao pDao = new PaymentDao();
+            
             int totalPrice = pDao.getOrderTotalPrice(paymentParam);
 
             return totalPrice;
