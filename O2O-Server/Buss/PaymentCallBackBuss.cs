@@ -71,7 +71,7 @@ namespace O2O_Server.Buss
                         pDao.insertPayLog(out_trade_no, transaction_id, total_fee, openid, "支付完成-支付金额与订单总金额不符");
                     }
 
-                    TemplateApi.SendTemplateMessage(Global.APPID, openid, "bjTZpPW5j7qG2zhzr_y1NYs_P3ZKZNdvGZgI8gbvT68", null, pDao.getPrePayId(out_trade_no));
+                    TemplateApi.SendTemplateMessage(Global.APPID, openid, "bjTZpPW5j7qG2zhzr_y1NYs_P3ZKZNdvGZgI8gbvT68", null, pDao.getPayData(out_trade_no).prePayId);
                 }
                 else
                 {

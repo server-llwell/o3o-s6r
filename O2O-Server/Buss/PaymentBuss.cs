@@ -19,9 +19,9 @@ namespace O2O_Server.Buss
         public PaymentBuss()
         {
             tenPayV3Info = new TenPayV3Info(
-                Global.APPID, 
-                Global.APPSECRET, 
-                Global.MCHID, 
+                Global.APPID,
+                Global.APPSECRET,
+                Global.MCHID,
                 Global.PaymentKey,
                 Global.CallBackUrl);
         }
@@ -41,36 +41,36 @@ namespace O2O_Server.Buss
 
             try
             {
-                SessionBag sessionBag =SessionContainer.GetSession(paymentParam.token);
+                SessionBag sessionBag = SessionContainer.GetSession(paymentParam.token);
                 var openId = sessionBag.OpenId;
-                var billId = this.createBill(openId,paymentParam);
+                var billId = this.createBill(openId, paymentParam);
                 var totalPrice = this.getBillPrice(paymentParam);
-                if (totalPrice==0)
+                if (totalPrice == 0)
                 {
                     throw new ApiException(CodeMessage.PaymentTotalPriceZero, "PaymentTotalPriceZero");
                 }
                 var timeStamp = TenPayV3Util.GetTimestamp();
                 var nonceStr = TenPayV3Util.GetNoncestr();
                 var product = paymentParam.product;
-                var xmlDataInfo = 
+                var xmlDataInfo =
                     new TenPayV3UnifiedorderRequestData(
-                        tenPayV3Info.AppId, 
+                        tenPayV3Info.AppId,
                         tenPayV3Info.MchId,
                         product,
                         billId,
-                        totalPrice, 
-                        "127.0.0.1", 
-                        tenPayV3Info.TenPayV3Notify, 
-                        TenPayV3Type.JSAPI, 
-                        openId, 
-                        tenPayV3Info.Key, 
+                        totalPrice,
+                        "127.0.0.1",
+                        tenPayV3Info.TenPayV3Notify,
+                        TenPayV3Type.JSAPI,
+                        openId,
+                        tenPayV3Info.Key,
                         nonceStr);
 
                 var result = TenPayV3.Html5Order(xmlDataInfo);
                 pDao.writePrePayId(billId, result.prepay_id);
                 var package = string.Format("prepay_id={0}", result.prepay_id);
                 var paySign = TenPayV3.GetJsPaySign(tenPayV3Info.AppId, timeStamp, nonceStr, package, tenPayV3Info.Key);
-                
+
                 PaymentResults paymentResults = new PaymentResults();
                 paymentResults.appId = tenPayV3Info.AppId;
                 paymentResults.nonceStr = nonceStr;
@@ -81,11 +81,22 @@ namespace O2O_Server.Buss
 
                 return paymentResults;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new ApiException(CodeMessage.PaymentError, "PaymentError");
             }
         }
+
+        public object Do_GetPayment(object param)
+        {
+            GetPaymentParam getPaymentParam = JsonConvert.DeserializeObject<GetPaymentParam>(param.ToString());
+            if (getPaymentParam == null)
+            {
+                throw new ApiException(CodeMessage.InvalidParam, "InvalidParam");
+            }
+            return pDao.getPayData(getPaymentParam.orderId);
+        }
+
 
         private string createBill(string openId,PaymentParam paymentParam)
         {
@@ -111,6 +122,7 @@ namespace O2O_Server.Buss
             return totalPrice;
         }
        
+
     }
 
     public class PaymentParam
@@ -136,5 +148,20 @@ namespace O2O_Server.Buss
         public string nonceStr;
         public string package;
         public string paySign;
+    }
+    public class GetPaymentParam
+    {
+        public string token;
+        public string orderId;
+    }
+
+
+    public class PaymentDataResults
+    {
+        public string shopName;
+        public string goodsName;
+        public string tradeTime;
+        public string tradeAmount;
+        public string prePayId;
     }
 }

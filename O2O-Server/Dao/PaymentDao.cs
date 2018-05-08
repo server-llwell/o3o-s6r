@@ -196,15 +196,17 @@ namespace O2O_Server.Dao
         /// <param name="orderId"></param>
         /// <param name="prePayId"></param>
         /// <returns></returns>
-        public string getPrePayId(string orderId)
+        public PaymentDataResults getPayData(string orderId)
         {
-            string sql = "select prePayId from t_order_list where parentOrderId = '" + orderId + "' ";
+            string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserId = s.shopCode and  parentOrderId = '" + orderId + "' ";
             DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_order_list").Tables[0];
-            if (dt.Rows.Count > 0)
-            {
-                return dt.Rows[0]["prePayId"].ToString();
-            }
-            return "";
+            PaymentDataResults p = new PaymentDataResults();
+            p.shopName = dt.Rows[0]["shopName"].ToString();
+            p.goodsName = dt.Rows[0]["goodsName"].ToString();
+            p.tradeTime = dt.Rows[0]["tradeTime"].ToString();
+            p.tradeAmount = dt.Rows[0]["tradeAmount"].ToString();
+            p.prePayId = dt.Rows[0]["prePayId"].ToString();
+            return p;
         }
     }
 }
