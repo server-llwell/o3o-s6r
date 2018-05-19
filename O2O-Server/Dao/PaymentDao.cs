@@ -1,4 +1,4 @@
-﻿using Com.Portsoft.Framework.Database;
+﻿using Com.ACBC.Framework.Database;
 using O2O_Server.Buss;
 using O2O_Server.Common;
 using System;
@@ -13,15 +13,15 @@ namespace O2O_Server.Dao
 
         public PaymentDao()
         {
-            if (DatabaseOperation.TYPE == null)
+            if (DatabaseOperationWeb.TYPE == null)
             {
-                DatabaseOperation.TYPE = new DBManager();
+                DatabaseOperationWeb.TYPE = new DBManager();
             }
         }
         public DataTable getGoods(string barcode)
         {
             string sql = "select id,thumb,goodsname,price,stock from t_goods_list where barcode = '" + barcode+"'";
-            return DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            return DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
         }
         /// <summary>
         /// 保存订单
@@ -37,7 +37,7 @@ namespace O2O_Server.Dao
                 Util util = new Util();
                 string[] addrSts = util.getAddr(paymentParam.inputAddress);//获取地址编码
                 string sql = "select * from t_goods_list where id =" + paymentParam.goodsId;
-                DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+                DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
                 if (dt.Rows.Count > 0)
                 {
                     double total = Convert.ToDouble(dt.Rows[0]["price"]) * Convert.ToDouble(paymentParam.inputNum);
@@ -53,7 +53,7 @@ namespace O2O_Server.Dao
                             "'" + addrSts[3] + "','000000','1','" + paymentParam.inputIdCard + "'," +
                             "'','','未付款','" + paymentParam.shop + "'," +
                             "'XXC','','XXC','"+ paymentParam.radio + "')";
-                    if (DatabaseOperation.ExecuteDML(insql))
+                    if (DatabaseOperationWeb.ExecuteDML(insql))
                     {
                         if (saveOrderGoods(billid,dt,paymentParam))
                         {
@@ -81,7 +81,7 @@ namespace O2O_Server.Dao
                         " goodsName,sendType,skubillname,supplyPrice,purchasePrice) " +
                         " values('" + billid + "','" + goodsDT.Rows[0]["barcode"].ToString() + "'," + goodsDT.Rows[0]["price"].ToString() + "," + paymentParam.inputNum + "," +
                         " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() + "',0,0)";
-            if (DatabaseOperation.ExecuteDML(insql))
+            if (DatabaseOperationWeb.ExecuteDML(insql))
             {
                 //setGoodsNum(billid, goodsDT.Rows[0]["barcode"].ToString(),Convert.ToInt32( paymentParam.inputNum));
                 return true;
@@ -117,7 +117,7 @@ namespace O2O_Server.Dao
             try
             {
                 string sql = "select * from t_goods_list where id =" + paymentParam.goodsId;
-                DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+                DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
                 if (dt.Rows.Count > 0)
                 {
                     double total = Convert.ToDouble(dt.Rows[0]["price"]) * Convert.ToDouble(paymentParam.inputNum);
@@ -143,7 +143,7 @@ namespace O2O_Server.Dao
             return true;
 #endif
             string sql = "select * from t_order_list where parentOrderId = '"+orderId+"'";
-            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
             {
                 double total = Convert.ToDouble(dt.Rows[0]["tradeAmount"]);
@@ -163,7 +163,7 @@ namespace O2O_Server.Dao
         public bool updateOrderForPay(string orderId,string payNo)
         {
             string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',status ='新订单' where parentOrderId = '" + orderId + "' ";
-            return DatabaseOperation.ExecuteDML(upsql);
+            return DatabaseOperationWeb.ExecuteDML(upsql);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace O2O_Server.Dao
         {
             string insql = "insert into t_log_pay(orderId,payType,payNo,totalPrice,openid,createtime,status) " +
                 "values('"+orderId+ "','微信支付','" + payNo + "'," + totalPrice + ",'" + openid + "',now(),'" + status + "')";
-            DatabaseOperation.ExecuteDML(insql);
+            DatabaseOperationWeb.ExecuteDML(insql);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace O2O_Server.Dao
         public bool writePrePayId(string orderId,string prePayId)
         {
             string upsql = "update t_order_list set prePayId= '"+prePayId+ "' where parentOrderId = '" + orderId + "' ";
-            return DatabaseOperation.ExecuteDML(upsql);
+            return DatabaseOperationWeb.ExecuteDML(upsql);
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace O2O_Server.Dao
         public PaymentDataResults getPayData(string orderId)
         {
             string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId, o.payNo,o.customerCode from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserId = s.shopCode and  parentOrderId = '" + orderId + "' ";
-            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_order_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_order_list").Tables[0];
             PaymentDataResults p = new PaymentDataResults();
             p.shopName = dt.Rows[0]["shopName"].ToString();
             p.goodsName = dt.Rows[0]["goodsName"].ToString();

@@ -1,4 +1,4 @@
-﻿using Com.Portsoft.Framework.Database;
+﻿using Com.ACBC.Framework.Database;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,15 +11,15 @@ namespace O2O_Server.Dao
 
         public GoodsDao()
         {
-            if (DatabaseOperation.TYPE == null)
+            if (DatabaseOperationWeb.TYPE == null)
             {
-                DatabaseOperation.TYPE = new DBManager();
+                DatabaseOperationWeb.TYPE = new DBManager();
             }
         }
         public DataTable getGoods(string barcode)
         {
             string sql = "select id,thumb,goodsname,price,stock from t_goods_list where barcode = '" + barcode+"'";
-            return DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            return DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
         }
     }
 }

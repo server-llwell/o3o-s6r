@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Senparc.Weixin.Cache.Redis;
+using Senparc.Weixin.Cache;
 
 namespace O2O_Server.Common
 {
@@ -17,6 +19,36 @@ namespace O2O_Server.Common
         /// 基础业务处理类对象
         /// </summary>
         public static BaseBuss BUSS = new BaseBuss();
+
+        /// <summary>
+        /// 初始化启动预加载
+        /// </summary>
+        public static void StartUp()
+        {
+            try
+            {
+                RedisManager.ConfigurationOption = REDIS;
+                CacheStrategyFactory.RegisterObjectCacheStrategy(() => RedisContainerCacheStrategy.Instance);
+            }
+            catch
+            {
+                Console.WriteLine("Redis Error, Change Local");
+            }
+        }
+
+        public static string REDIS
+        {
+            get
+            {
+#if DEBUG
+                var redis = System.Environment.GetEnvironmentVariable("redis", EnvironmentVariableTarget.User);
+#endif
+#if !DEBUG
+                var redis = "redis-api";
+#endif
+                return redis;
+            }
+        }
 
         /// <summary>
         /// 小程序APPID

@@ -1,4 +1,4 @@
-﻿using Com.Portsoft.Framework.Database;
+﻿using Com.ACBC.Framework.Database;
 using O2O_Server.Buss;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ namespace O2O_Server.Dao
 
         public UserDao()
         {
-            if (DatabaseOperation.TYPE == null)
+            if (DatabaseOperationWeb.TYPE == null)
             {
-                DatabaseOperation.TYPE = new DBManager();
+                DatabaseOperationWeb.TYPE = new DBManager();
             }
         }
         public string getShopName(string shop)
         {
             string sql = "select shopName from t_sys_shop  "
                        + " where shopCode = '" + shop + "' ";
-            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_sys_shop").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_sys_shop").Tables[0];
             if (dt.Rows.Count>0)
             {
                 return dt.Rows[0][0].ToString();

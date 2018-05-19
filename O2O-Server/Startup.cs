@@ -33,6 +33,8 @@ namespace O2O_Server
                 //options.InputFormatters.Add(new XmlSerializerInputFormatter());
                 options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
             });
+
+            Common.Global.StartUp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

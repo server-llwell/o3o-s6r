@@ -31,6 +31,8 @@ namespace O2O_Server.Buss
             var jsonResult = SnsApi.JsCode2Json(Global.APPID, Global.APPSECRET, loginParam.code);
             if (jsonResult.errcode == Senparc.Weixin.ReturnCode.请求成功)
             {
+                var manager = Senparc.Weixin.Cache.Redis.RedisManager.Manager;
+                
                 AccessTokenContainer.Register(Global.APPID, Global.APPSECRET);
                 var sessionBag = SessionContainer.UpdateSession(null, jsonResult.openid, jsonResult.session_key);
                 return new { sessionId = sessionBag.Key };

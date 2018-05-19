@@ -1,4 +1,4 @@
-﻿using Com.Portsoft.Framework.Database;
+﻿using Com.ACBC.Framework.Database;
 using O2O_Server.Buss;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,9 @@ namespace O2O_Server.Dao
 
         public OrderDao()
         {
-            if (DatabaseOperation.TYPE == null)
+            if (DatabaseOperationWeb.TYPE == null)
             {
-                DatabaseOperation.TYPE = new DBManager();
+                DatabaseOperationWeb.TYPE = new DBManager();
             }
         }
         public OrderListResult getOrderList(string openid,string shop)
@@ -22,7 +22,7 @@ namespace O2O_Server.Dao
             OrderListResult orderListResult = new OrderListResult();
             string sql = "select l.merchantOrderId,l.tradeTime from t_order_list l "
                        + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != '未支付' and l.purchaserId = '" + shop + "' ";
-            DataTable dt = DatabaseOperation.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count>0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -33,7 +33,7 @@ namespace O2O_Server.Dao
                         "from t_order_goods g,t_goods_list l " +
                         "where l.barcode = g.barCode and g.merchantOrderId = '" + dt.Rows[i]["merchantOrderId"].ToString() + "' " +
                         "group by g.barCode";
-                    DataTable dt1 = DatabaseOperation.ExecuteSelectDS(sql1, "t_goods_list").Tables[0];
+                    DataTable dt1 = DatabaseOperationWeb.ExecuteSelectDS(sql1, "t_goods_list").Tables[0];
                     if (dt1.Rows.Count > 0)
                     {
                         slt = dt1.Rows[0]["slt"].ToString();
