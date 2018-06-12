@@ -77,9 +77,10 @@ namespace O2O_Server.Dao
         /// <returns></returns>
         private bool saveOrderGoods(string billid, DataTable goodsDT, PaymentParam paymentParam)
         {
-            string insql = "insert into t_order_goods(merchantOrderId,barCode,skuUnitPrice,quantity," +
+            string insql = "insert into t_order_goods(merchantOrderId,barCode,slt,skuUnitPrice,quantity," +
                         " goodsName,sendType,skubillname,supplyPrice,purchasePrice) " +
-                        " values('" + billid + "','" + goodsDT.Rows[0]["barcode"].ToString() + "'," + goodsDT.Rows[0]["price"].ToString() + "," + paymentParam.inputNum + "," +
+                        " values('" + billid + "','" + goodsDT.Rows[0]["barcode"].ToString() + "','" + goodsDT.Rows[0]["slt"].ToString() + 
+                        "'," + goodsDT.Rows[0]["price"].ToString() + "," + paymentParam.inputNum + "," +
                         " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() + "',0,0)";
             if (DatabaseOperationWeb.ExecuteDML(insql))
             {
@@ -116,7 +117,7 @@ namespace O2O_Server.Dao
         {
             try
             {
-                string sql = "select * from t_goods_list where id =" + paymentParam.goodsId;
+                string sql = "select price from t_goods_list where id =" + paymentParam.goodsId;
                 DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
                 if (dt.Rows.Count > 0)
                 {
@@ -162,7 +163,7 @@ namespace O2O_Server.Dao
         /// <param name="payNo"></param>
         public bool updateOrderForPay(string orderId,string payNo)
         {
-            string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',status ='新订单' where parentOrderId = '" + orderId + "' ";
+            string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',payTime=now(),status ='新订单' where parentOrderId = '" + orderId + "' ";
             return DatabaseOperationWeb.ExecuteDML(upsql);
         }
 
