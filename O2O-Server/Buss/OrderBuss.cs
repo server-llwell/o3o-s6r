@@ -70,6 +70,9 @@ namespace O2O_Server.Buss
         public string product;//主要商品名
         public string status;//状态
         public string total;//总价
+        public string consigneeName;//联系人
+        public string consigneeMobile;//联系电话
+        public string addr;//地址
         public string waybillno;//运单号
         public List<OrderGoodsListItem> orderGoodsList = new List<OrderGoodsListItem>();
     }

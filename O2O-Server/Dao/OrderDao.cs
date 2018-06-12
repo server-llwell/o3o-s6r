@@ -77,8 +77,10 @@ namespace O2O_Server.Dao
         public OrderListItem getOrder(string openid, string orderId)
         {
             OrderListItem orderListItem = new OrderListItem();
-            string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.waybillno,l.payTime from t_order_list l "
-                       + " where l.merchantOrderId = '" + orderId + "' and l.customerCode = '" + openid + "' ";
+            string sql = "select merchantOrderId,tradeTime,status,tradeAmount,waybillno,payTime,consigneeName," +
+                         "consigneeMobile,addrProvince,addrCity,addrDistrict,addrDetail " +
+                         "from t_order_list "+
+                         "where merchantOrderId = '" + orderId + "' and customerCode = '" + openid + "' ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -111,7 +113,10 @@ namespace O2O_Server.Dao
                 orderListItem.waybillno = dt.Rows[0]["waybillno"].ToString();
                 //orderListItem.product = pro.Substring(0, pro.Length - 1);
                 orderListItem.total = dt.Rows[0]["tradeAmount"].ToString();
-                string status = dt.Rows[0]["status"].ToString();
+                orderListItem.consigneeName = dt.Rows[0]["consigneeName"].ToString();
+                orderListItem.consigneeMobile = dt.Rows[0]["consigneeMobile"].ToString();
+                orderListItem.addr = dt.Rows[0]["addrProvince"].ToString()+ dt.Rows[0]["addrCity"].ToString()+ dt.Rows[0]["addrDistrict"].ToString()+ dt.Rows[0]["addrDetail"].ToString();
+                string status = dt.Rows[0]["status"].ToString(); 
                 if (status == "新订单" || status == "已导出")
                 {
                     status = "等待发货";
