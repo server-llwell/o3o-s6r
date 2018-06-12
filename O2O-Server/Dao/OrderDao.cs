@@ -109,7 +109,7 @@ namespace O2O_Server.Dao
                 orderListItem.billId = dt.Rows[0]["merchantOrderId"].ToString();
                 orderListItem.imgUrl = slt;
                 orderListItem.createTime = dt.Rows[0]["tradeTime"].ToString();
-                orderListItem.payTime = dt.Rows[0]["payTime"].ToString();
+                orderListItem.payTime =Convert.ToDateTime( dt.Rows[0]["payTime"].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
                 orderListItem.waybilltype = dt.Rows[0]["waybilltype"].ToString();
                 orderListItem.waybillno = dt.Rows[0]["waybillno"].ToString();
                 //orderListItem.product = pro.Substring(0, pro.Length - 1);
