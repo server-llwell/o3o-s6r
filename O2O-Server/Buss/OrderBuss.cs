@@ -66,6 +66,7 @@ namespace O2O_Server.Buss
         public string billId;//订单号
         public string imgUrl;//订单商品图片
         public string createTime;//订单创建时间
+        public string payTime;//支付时间
         public string product;//主要商品名
         public string status;//状态
         public string total;//总价

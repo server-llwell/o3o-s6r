@@ -20,7 +20,7 @@ namespace O2O_Server.Dao
         public OrderListResult getOrderList(string openid, string shop)
         {
             OrderListResult orderListResult = new OrderListResult();
-            string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount from t_order_list l "
+            string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.payTime from t_order_list l "
                        + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != '未支付' and l.purchaserId = '" + shop + "' ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
@@ -46,6 +46,7 @@ namespace O2O_Server.Dao
                     orderListItem.billId = dt.Rows[i]["merchantOrderId"].ToString();
                     orderListItem.imgUrl = slt;
                     orderListItem.createTime = dt.Rows[i]["tradeTime"].ToString();
+                    orderListItem.payTime = dt.Rows[i]["payTime"].ToString();
                     orderListItem.product = pro.Substring(0, pro.Length - 1);
                     orderListItem.total = dt.Rows[i]["tradeAmount"].ToString();
                     string status = dt.Rows[i]["status"].ToString();
@@ -76,7 +77,7 @@ namespace O2O_Server.Dao
         public OrderListItem getOrder(string openid, string orderId)
         {
             OrderListItem orderListItem = new OrderListItem();
-            string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.waybillno from t_order_list l "
+            string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.waybillno,l.payTime from t_order_list l "
                        + " where l.merchantOrderId = '" + orderId + "' and l.customerCode = '" + openid + "' ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
@@ -106,6 +107,7 @@ namespace O2O_Server.Dao
                 orderListItem.billId = dt.Rows[0]["merchantOrderId"].ToString();
                 orderListItem.imgUrl = slt;
                 orderListItem.createTime = dt.Rows[0]["tradeTime"].ToString();
+                orderListItem.payTime = dt.Rows[0]["payTime"].ToString();
                 orderListItem.waybillno = dt.Rows[0]["waybillno"].ToString();
                 //orderListItem.product = pro.Substring(0, pro.Length - 1);
                 orderListItem.total = dt.Rows[0]["tradeAmount"].ToString();
