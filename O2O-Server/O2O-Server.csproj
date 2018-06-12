@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+	<PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
     <RootNamespace>O2O_Server</RootNamespace>
     <AssemblyName>O2O_Server</AssemblyName>
     <ServerGarbageCollection>false</ServerGarbageCollection>
