@@ -77,7 +77,7 @@ namespace O2O_Server.Dao
         public OrderListItem getOrder(string openid, string orderId)
         {
             OrderListItem orderListItem = new OrderListItem();
-            string sql = "select merchantOrderId,tradeTime,status,tradeAmount,waybillno,payTime,consigneeName," +
+            string sql = "select merchantOrderId,tradeTime,status,tradeAmount,waybillno,waybilltype,payTime,consigneeName," +
                          "consigneeMobile,addrProvince,addrCity,addrDistrict,addrDetail " +
                          "from t_order_list "+
                          "where merchantOrderId = '" + orderId + "' and customerCode = '" + openid + "' ";
@@ -110,6 +110,7 @@ namespace O2O_Server.Dao
                 orderListItem.imgUrl = slt;
                 orderListItem.createTime = dt.Rows[0]["tradeTime"].ToString();
                 orderListItem.payTime = dt.Rows[0]["payTime"].ToString();
+                orderListItem.waybilltype = dt.Rows[0]["waybilltype"].ToString();
                 orderListItem.waybillno = dt.Rows[0]["waybillno"].ToString();
                 //orderListItem.product = pro.Substring(0, pro.Length - 1);
                 orderListItem.total = dt.Rows[0]["tradeAmount"].ToString();

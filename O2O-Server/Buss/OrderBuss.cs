@@ -72,6 +72,7 @@ namespace O2O_Server.Buss
         public string consigneeName;//联系人
         public string consigneeMobile;//联系电话
         public string addr;//地址
+        public string waybilltype;//快递公司
         public string waybillno;//运单号
         public List<OrderGoodsListItem> orderGoodsList = new List<OrderGoodsListItem>();
     }
