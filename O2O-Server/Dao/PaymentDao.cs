@@ -77,11 +77,17 @@ namespace O2O_Server.Dao
         /// <returns></returns>
         private bool saveOrderGoods(string billid, DataTable goodsDT, PaymentParam paymentParam)
         {
+            string sql = "select offer from t_goods_offer where barcode = '" + goodsDT.Rows[0]["barcode"].ToString() + "' and usercode ='O2O' ";
+            DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
+            string sql1 = "select inprice from t_goods_warehouse where barcode = '" + goodsDT.Rows[0]["barcode"].ToString() + "' and suppliercode ='shingostory@163.com'  ";
+            DataTable dt1 = DatabaseOperationWeb.ExecuteSelectDS(sql1, "t_goods_list").Tables[0];
+
             string insql = "insert into t_order_goods(merchantOrderId,barCode,slt,skuUnitPrice,quantity," +
                         " goodsName,sendType,skubillname,supplyPrice,purchasePrice) " +
                         " values('" + billid + "','" + goodsDT.Rows[0]["barcode"].ToString() + "','" + goodsDT.Rows[0]["slt"].ToString() + 
                         "'," + goodsDT.Rows[0]["price"].ToString() + "," + paymentParam.inputNum + "," +
-                        " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() + "',0,0)";
+                        " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() +
+                        "',"+dt1.Rows[0][0].ToString()+ "," + dt.Rows[0][0].ToString() + ")";
             if (DatabaseOperationWeb.ExecuteDML(insql))
             {
                 //setGoodsNum(billid, goodsDT.Rows[0]["barcode"].ToString(),Convert.ToInt32( paymentParam.inputNum));
