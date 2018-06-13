@@ -40,14 +40,21 @@ namespace O2O_Server.Dao
                 DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
                 if (dt.Rows.Count > 0)
                 {
+                    string sql1 = "select wcode from t_goods_warehouse where barcode = '" + dt.Rows[0]["barcode"].ToString() + "' and suppliercode ='shingostory@163.com'  ";
+                    DataTable dt1 = DatabaseOperationWeb.ExecuteSelectDS(sql1, "t_goods_list").Tables[0];
+                    string wcode = "";
+                    if (dt1.Rows.Count>0)
+                    {
+                        wcode = dt1.Rows[0]["wcode"].ToString();
+                    }
                     double total = Convert.ToDouble(dt.Rows[0]["price"]) * Convert.ToDouble(paymentParam.inputNum);
-                    string insql = "insert into t_order_list(customerCode,parentOrderId,merchantOrderId,tradeTime," +
+                    string insql = "insert into t_order_list(warehouseCode,customerCode,parentOrderId,merchantOrderId,tradeTime," +
                                                     "tradeAmount,goodsTotalAmount,consigneeName,consigneeMobile," +
                                                     "addrCountry,addrProvince,addrCity,addrDistrict," +
                                                     "addrDetail,zipCode,idType,idNumber," +
                                                     "idFountImgUrl,idBackImgUrl,status,purchaserId," +
                                                     "apitype,fqID,sendapi,orderType) " +
-                            "values('" + openId + "','" + billid + "','" + billid + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
+                            "values('" + wcode + "','" + openId + "','" + billid + "','" + billid + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
                             "" + total + "," + total + ",'" + paymentParam.inputName + "','" + paymentParam.inputPhone + "'," +
                             "'中国','" + addrSts[0] + "','" + addrSts[1] + "','" + addrSts[2] + "'," +
                             "'" + addrSts[3] + "','000000','1','" + paymentParam.inputIdCard + "'," +
