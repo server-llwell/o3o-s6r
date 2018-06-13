@@ -60,7 +60,7 @@ namespace O2O_Server.Common
                     }
                 }
             }
-            if (sts[3]=="")
+            if (sts[3]==""||sts[3]==null)
             {
                 sts[3] = addrDetail;
             }
