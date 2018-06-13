@@ -87,7 +87,7 @@ namespace O2O_Server.Dao
                         " values('" + billid + "','" + goodsDT.Rows[0]["barcode"].ToString() + "','" + goodsDT.Rows[0]["slt"].ToString() + 
                         "'," + goodsDT.Rows[0]["price"].ToString() + "," + paymentParam.inputNum + "," +
                         " '" + goodsDT.Rows[0]["goodsname"].ToString() + "','XXC','" + goodsDT.Rows[0]["goodsname"].ToString() +
-                        "',"+dt1.Rows[0][0].ToString()+ "," + dt.Rows[0][0].ToString() + ")";
+                        "',"+dt.Rows[0][0].ToString()+ "," + dt1.Rows[0][0].ToString() + ")";
             if (DatabaseOperationWeb.ExecuteDML(insql))
             {
                 //setGoodsNum(billid, goodsDT.Rows[0]["barcode"].ToString(),Convert.ToInt32( paymentParam.inputNum));
