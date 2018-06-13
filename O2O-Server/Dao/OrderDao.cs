@@ -19,9 +19,14 @@ namespace O2O_Server.Dao
         }
         public OrderListResult getOrderList(string openid, string shop)
         {
+            string st = "";
+            if (shop!="")
+            {
+                st = " and l.purchaserId = '" + shop + "' ";
+            }
             OrderListResult orderListResult = new OrderListResult();
             string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.payTime from t_order_list l "
-                       + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != '未支付' and l.purchaserId = '" + shop + "' order by id desc ";
+                       + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != '未支付' "+st+" order by id desc ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
             {
