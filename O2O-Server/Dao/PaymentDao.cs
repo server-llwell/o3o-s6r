@@ -58,7 +58,7 @@ namespace O2O_Server.Dao
                             "" + total + "," + total + ",'" + paymentParam.inputName + "','" + paymentParam.inputPhone + "'," +
                             "'中国','" + addrSts[0] + "','" + addrSts[1] + "','" + addrSts[2] + "'," +
                             "'" + addrSts[3] + "','000000','1','" + paymentParam.inputIdCard + "'," +
-                            "'','','未付款','" + paymentParam.shop + "'," +
+                            "'','','未支付','" + paymentParam.shop + "'," +
                             "'XXC','','XXC','"+ paymentParam.radio + "')";
                     if (DatabaseOperationWeb.ExecuteDML(insql))
                     {
