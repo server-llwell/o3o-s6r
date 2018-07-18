@@ -58,7 +58,7 @@ namespace O2O_Server.Dao
                             "" + total + "," + total + ",'" + paymentParam.inputName + "','" + paymentParam.inputPhone + "'," +
                             "'中国','" + addrSts[0] + "','" + addrSts[1] + "','" + addrSts[2] + "'," +
                             "'" + addrSts[3] + "','000000','1','" + paymentParam.inputIdCard + "'," +
-                            "'','','未支付','" + paymentParam.shop + "'," +
+                            "'','',0,'" + paymentParam.shop + "'," +
                             "'XXC','','XXC','"+ paymentParam.radio + "')";
                     if (DatabaseOperationWeb.ExecuteDML(insql))
                     {
@@ -176,7 +176,7 @@ namespace O2O_Server.Dao
         /// <param name="payNo"></param>
         public bool updateOrderForPay(string orderId,string payNo)
         {
-            string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',payTime=now(),status ='新订单' where parentOrderId = '" + orderId + "' ";
+            string upsql = "update t_order_list set payNo='"+payNo+ "',payType='微信支付',payTime=now(),status =1 where parentOrderId = '" + orderId + "' ";
             return DatabaseOperationWeb.ExecuteDML(upsql);
         }
 

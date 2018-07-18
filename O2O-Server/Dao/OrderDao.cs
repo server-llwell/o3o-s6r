@@ -26,7 +26,7 @@ namespace O2O_Server.Dao
             }
             OrderListResult orderListResult = new OrderListResult();
             string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.payTime from t_order_list l "
-                       + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != '未支付' "+st+" order by id desc ";
+                       + " where l.sendapi = 'XXC' and l.customerCode = '" + openid + "' and l.`status` != 0 "+st+" order by id desc ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_goods_list").Tables[0];
             if (dt.Rows.Count > 0)
             {
@@ -55,15 +55,15 @@ namespace O2O_Server.Dao
                     orderListItem.product = pro.Substring(0, pro.Length - 1);
                     orderListItem.total = dt.Rows[i]["tradeAmount"].ToString();
                     string status = dt.Rows[i]["status"].ToString();
-                    if (status == "新订单" || status == "已导出")
+                    if (status == "1" || status == "2")
                     {
                         status = "等待发货";
                     }
-                    else if (status == "已回传")
+                    else if (status == "4" || status == "5")
                     {
                         status = "已完成";
                     }
-                    else if (status == "已录运单号")
+                    else if (status == "3")
                     {
                         status = "已发货";
                     }
@@ -122,16 +122,16 @@ namespace O2O_Server.Dao
                 orderListItem.consigneeName = dt.Rows[0]["consigneeName"].ToString();
                 orderListItem.consigneeMobile = dt.Rows[0]["consigneeMobile"].ToString();
                 orderListItem.addr = dt.Rows[0]["addrProvince"].ToString()+ dt.Rows[0]["addrCity"].ToString()+ dt.Rows[0]["addrDistrict"].ToString()+ dt.Rows[0]["addrDetail"].ToString();
-                string status = dt.Rows[0]["status"].ToString(); 
-                if (status == "新订单" || status == "已导出")
+                string status = dt.Rows[0]["status"].ToString();
+                if (status == "1" || status == "2")
                 {
                     status = "等待发货";
                 }
-                else if (status == "已回传")
+                else if (status == "4" || status == "6")
                 {
                     status = "已完成";
                 }
-                else if (status == "已录运单号")
+                else if (status == "3")
                 {
                     status = "已发货";
                 }
