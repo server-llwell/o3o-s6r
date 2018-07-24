@@ -22,7 +22,7 @@ namespace O2O_Server.Dao
             string st = "";
             if (shop!="")
             {
-                st = " and l.purchaserId = '" + shop + "' ";
+                st = " and l.purchaserCode = '" + shop + "' ";
             }
             OrderListResult orderListResult = new OrderListResult();
             string sql = "select l.merchantOrderId,l.tradeTime,l.status,l.tradeAmount,l.payTime from t_order_list l "

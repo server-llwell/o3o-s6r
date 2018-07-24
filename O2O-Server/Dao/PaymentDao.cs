@@ -52,7 +52,7 @@ namespace O2O_Server.Dao
                                                     "tradeAmount,goodsTotalAmount,consigneeName,consigneeMobile," +
                                                     "addrCountry,addrProvince,addrCity,addrDistrict," +
                                                     "addrDetail,zipCode,idType,idNumber," +
-                                                    "idFountImgUrl,idBackImgUrl,status,purchaserId," +
+                                                    "idFountImgUrl,idBackImgUrl,status,purchaserCode," +
                                                     "apitype,fqID,sendapi,orderType) " +
                             "values('" + wcode + "','" + openId + "','" + billid + "','" + billid + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," +
                             "" + total + "," + total + ",'" + paymentParam.inputName + "','" + paymentParam.inputPhone + "'," +
@@ -215,7 +215,7 @@ namespace O2O_Server.Dao
         /// <returns></returns>
         public PaymentDataResults getPayData(string orderId)
         {
-            string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId, o.payNo,o.customerCode from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserId = s.shopCode and  parentOrderId = '" + orderId + "' ";
+            string sql = "select s.shopName,g.goodsName,o.tradeTime,o.tradeAmount, o.prePayId, o.payNo,o.customerCode from t_order_list o,t_sys_shop s,t_order_goods g where o.merchantOrderId = g.merchantOrderId and o.purchaserCode = s.shopCode and  parentOrderId = '" + orderId + "' ";
             DataTable dt = DatabaseOperationWeb.ExecuteSelectDS(sql, "t_order_list").Tables[0];
             PaymentDataResults p = new PaymentDataResults();
             p.shopName = dt.Rows[0]["shopName"].ToString();
