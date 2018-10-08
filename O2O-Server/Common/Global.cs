@@ -41,7 +41,7 @@ namespace O2O_Server.Common
             get
             {
 #if DEBUG
-                var redis = System.Environment.GetEnvironmentVariable("redis", EnvironmentVariableTarget.User);
+                var redis = System.Environment.GetEnvironmentVariable("redis", EnvironmentVariableTarget.Process);
 #endif
 #if !DEBUG
                 var redis = "redis-api";
@@ -58,7 +58,7 @@ namespace O2O_Server.Common
             get
             {
 #if DEBUG
-                var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.User);
+                var appId = System.Environment.GetEnvironmentVariable("WxAppId", EnvironmentVariableTarget.Process);
 #endif
 #if !DEBUG
                 var appId = System.Environment.GetEnvironmentVariable("WxAppId");
@@ -75,7 +75,7 @@ namespace O2O_Server.Common
             get
             {
 #if DEBUG
-                var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.User);
+                var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret", EnvironmentVariableTarget.Process);
 #endif
 #if !DEBUG
                 var appSecret = System.Environment.GetEnvironmentVariable("WxAppSecret");
@@ -93,7 +93,7 @@ namespace O2O_Server.Common
             get
             {
 #if DEBUG
-                var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.User);
+                var mchId = System.Environment.GetEnvironmentVariable("WxMchId", EnvironmentVariableTarget.Process);
 #endif
 #if !DEBUG
                 var mchId = System.Environment.GetEnvironmentVariable("WxMchId");
@@ -111,7 +111,7 @@ namespace O2O_Server.Common
             get
             {
 #if DEBUG
-                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.User);
+                var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey", EnvironmentVariableTarget.Process);
 #endif
 #if !DEBUG
                 var paymentKey = System.Environment.GetEnvironmentVariable("WxPaymentKey");

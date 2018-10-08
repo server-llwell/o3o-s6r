@@ -74,7 +74,7 @@ namespace O2O_Server.Dao
             }
             else
             {
-                return null;
+                return new OrderListResult();
             }
         }
 
